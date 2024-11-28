@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Earning Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .balance {
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 2px solid #007bff;
+            border-radius: 5px;
+            color: #007bff;
+        }
+        .task {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .task button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        .task button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .task.completed {
+            background-color: #d4edda;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Task Earning Website</h1>
+    </header>
+    <div class="container">
+        <div class="balance" id="balance">
+            Available Balance: $0.00 (USDT)
+        </div>
+        <div class="tasks">
+            <!-- Tasks: Video Watching -->
+            <div class="task" data-amount="0.10" data-link="https://www.youtube.com/watch?v=example_video_1">
+                <span>Task 1: Watch Video</span>
+                <button onclick="startTask(this, 'video')">Start</button>
+                <button onclick="completeTask(this)" disabled>Complete ($0.10)</button>
+            </div>
+            <div class="task" data-amount="0.10" data-link="https://www.youtube.com/watch?v=example_video_2">
+                <span>Task 2: Watch Video</span>
+                <button onclick="startTask(this, 'video')">Start</button>
+                <button onclick="completeTask(this)" disabled>Complete ($0.10)</button>
+            </div>
+            <div class="task" data-amount="0.10" data-link="https://www.youtube.com/watch?v=example_video_3">
+                <span>Task 3: Watch Video</span>
+                <button onclick="startTask(this, 'video')">Start</button>
+                <button onclick="completeTask(this)" disabled>Complete ($0.10)</button>
+            </div>
+            <div class="task" data-amount="0.10" data-link="https://www.youtube.com/watch?v=example_video_4">
+                <span>Task 4: Watch Video</span>
+                <button onclick="startTask(this, 'video')">Start</button>
+                <button onclick="completeTask(this)" disabled>Complete ($0.10)</button>
+            </div>
+            <div class="task" data-amount="0.10" data-link="https://www.youtube.com/watch?v=example_video_5">
+                <span>Task 5: Watch Video</span>
+                <button onclick="startTask(this, 'video')">Start</button>
+                <button onclick="completeTask(this)" disabled>Complete ($0.10)</button>
+            </div>
+
+            <!-- Tasks: Website Visiting -->
+            <div class="task" data-amount="0.10" data-link="https://www.example.com/website_1">
+                <span>Task 6: Visit Website</span>
+                <button onclick="startTask(this, 'website')">Start</button>
+                <button onclick="completeTask(this)" disabled>Complete ($0.10)</button>
+            </div>
+            <div class="task" data-amount="0.10" data-link="https://www.example.com/website_2">
+                <span>Task 7: Visit Website</span>
+                <button onclick="startTask(this, 'website')">Start</button>
+                <button onclick="completeTask(this)" disabled>Complete ($0.10)</button>
+            </div>
+            <div class="task" data-amount="0.10" data-link="https://www.example.com/website_3">
+                <span>Task 8: Visit Website</span>
+                <button onclick="startTask(this, 'website')">Start</button>
+                <button onclick="completeTask(this)" disabled>Complete ($0.10)</button>
+            </div>
+            <div class="task" data-amount="0.10" data-link="https://www.example.com/website_4">
+                <span>Task 9: Visit Website</span>
+                <button onclick="startTask(this, 'website')">Start</button>
+                <button onclick="completeTask(this)" disabled>Complete ($0.10)</button>
+            </div>
+            <div class="task" data-amount="0.10" data-link="https://www.example.com/website_5">
+                <span>Task 10: Visit Website</span>
+                <button onclick="startTask(this, 'website')">Start</button>
+                <button onclick="completeTask(this)" disabled>Complete ($0.10)</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let balance = 0;
+
+        function startTask(button, type) {
+            const task = button.parentElement;
+            const link = task.getAttribute("data-link");
+
+            if (!link) {
+                alert("No link is set for this task. Please contact the administrator.");
+                return;
+            }
+
+            // Open the link in a new tab
+            const newTab = window.open(link, "_blank");
+            if (!newTab || newTab.closed || typeof newTab.closed == 'undefined') {
+                alert("Popup blocked! Please allow popups for this site.");
+                return;
+            }
+
+            // Disable the start button
+            button.disabled = true;
+
+            // Get the complete button
+            const completeButton = task.querySelector("button:nth-child(3)");
+            completeButton.disabled = true;
+
+            // Simulate real-time task action with a timer
+            const duration = type === "video" ? 10 : 5; // Duration in seconds
+            const originalText = button.innerText;
+            button.innerText = `In Progress (${duration}s)`;
+
+            let remainingTime = duration;
+            const interval = setInterval(() => {
+                remainingTime--;
+                button.innerText = `In Progress (${remainingTime}s)`;
+
+                if (remainingTime <= 0) {
+                    clearInterval(interval);
+                    button.innerText = originalText;
+                    completeButton.disabled = false; // Enable the complete button
+                    alert(`Task completed! Now click "Complete" to earn your reward.`);
+                }
+            }, 1000);
+        }
+
+        function completeTask(button) {
+            const task = button.parentElement;
+            const amount = parseFloat(task.getAttribute("data-amount"));
+
+            if (button.disabled) {
+                alert("You must start and complete the task before clicking 'Complete.'");
+                return;
+            }
+
+            // Add amount to balance
+            balance += amount;
+
+            // Update balance display
+            document.getElementById("balance").innerText = `Available Balance: $${balance.toFixed(2)} (USDT)`;
+
+            // Mark task as completed
+            button.disabled = true;
+            task.classList.add("completed");
+            task.querySelector("button:nth-child(2)").disabled = true;
+            task.querySelector("button:nth-child(3)").innerText = "Completed";
+        }
+    </script>
+</body>
+</html>
